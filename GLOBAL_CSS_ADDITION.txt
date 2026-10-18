@@ -1,0 +1,3 @@
+Append this to app/globals.css if these classes are not already present:
+
+.brandText b,.brandText small{display:block}.brandText small{color:var(--muted,#98a3b9)}.menuSlot{margin-left:auto;display:flex;align-items:center}.top{z-index:80}.subjectGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.subject{position:relative}.subject i{display:block;font-size:2.4rem;font-style:normal}.subject h3{margin:8px 0}.subject strong{position:absolute;right:20px;top:18px;color:#ff747b;font-size:1.7rem}@media(max-width:650px){.subjectGrid{grid-template-columns:1fr}.brandText small{display:none}}
