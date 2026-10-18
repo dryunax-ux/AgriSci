@@ -1,11 +1,15 @@
-Separate KJSEA Bank Correction
+KJSEA 2025 First Paper Upload Patch
 
-Replace:
-- components/HamburgerMenu.tsx
+Adds two uploaded papers to the separate KJSEA bank:
+- public/kjsea/kjsea-2025-agriculture-nutrition.pdf
+- public/kjsea/kjsea-2025-integrated-science-paper-1.pdf
+
+Add/replace:
+- lib/kjseaPapers.ts
+- components/KjseaBank.tsx
+- components/KjseaBank.module.css
 - app/kjsea/page.tsx
+- app/kjsea/[paper]/page.tsx
+- public/kjsea/*.pdf
 
-The hamburger drawer now has a dedicated ASSESSMENT BANKS section with two separate choices:
-1. Curriculum Question Banks -> /questions
-2. KJSEA Sample Paper Bank -> /kjsea
-
-The KJSEA page does not display the 100-question strand banks. It only holds uploaded KJSEA sample papers and equivalent practice papers.
+The curriculum Question Banks at /questions remain separate.
