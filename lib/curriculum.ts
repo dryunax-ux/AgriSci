@@ -1,0 +1,392 @@
+export const units = [
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Conservation of Resources",
+    "code": "1.1",
+    "title": "Soil Conservation Measures",
+    "lessons": 10,
+    "slug": "soil-conservation-measures",
+    "inquiry": "How can soil conservation measures improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Conservation of Resources",
+    "code": "1.2",
+    "title": "Water Harvesting and Storage",
+    "lessons": 9,
+    "slug": "water-harvesting-and-storage",
+    "inquiry": "How can water harvesting and storage improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.1",
+    "title": "Kitchen and Backyard Gardening",
+    "lessons": 9,
+    "slug": "kitchen-and-backyard-gardening",
+    "inquiry": "How can kitchen and backyard gardening improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.2",
+    "title": "Poultry Rearing in a Fold",
+    "lessons": 11,
+    "slug": "poultry-rearing-in-a-fold",
+    "inquiry": "How can poultry rearing in a fold improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.3",
+    "title": "Crop Pest and Disease Control",
+    "lessons": 10,
+    "slug": "crop-pest-and-disease-control",
+    "inquiry": "How can crop pest and disease control improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.4",
+    "title": "Preparation of Animal Products",
+    "lessons": 9,
+    "slug": "preparation-of-animal-products",
+    "inquiry": "How can preparation of animal products improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.5",
+    "title": "Preserving Animal Products",
+    "lessons": 9,
+    "slug": "preserving-animal-products",
+    "inquiry": "How can preserving animal products improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.6",
+    "title": "Preparing a Balanced Meal",
+    "lessons": 11,
+    "slug": "preparing-a-balanced-meal",
+    "inquiry": "How can preparing a balanced meal improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Hygiene Practices",
+    "code": "3.1",
+    "title": "Cleaning the Kitchen",
+    "lessons": 9,
+    "slug": "cleaning-the-kitchen",
+    "inquiry": "How can cleaning the kitchen improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Production Techniques",
+    "code": "4.1",
+    "title": "Constructing Household Items with Seams",
+    "lessons": 14,
+    "slug": "constructing-household-items-with-seams",
+    "inquiry": "How can constructing household items with seams improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Production Techniques",
+    "code": "4.2",
+    "title": "Constructing an Innovative Animal Waterer",
+    "lessons": 10,
+    "slug": "constructing-an-innovative-animal-waterer",
+    "inquiry": "How can constructing an innovative animal waterer improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "agriculture",
+    "strand": "Production Techniques",
+    "code": "4.3",
+    "title": "ICT Support Services",
+    "lessons": 9,
+    "slug": "ict-support-services",
+    "inquiry": "How can ict support services improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.1",
+    "title": "Elements and Compounds",
+    "lessons": 18,
+    "slug": "elements-and-compounds",
+    "inquiry": "How can elements and compounds improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.2",
+    "title": "Physical and Chemical Changes",
+    "lessons": 22,
+    "slug": "physical-and-chemical-changes",
+    "inquiry": "How can physical and chemical changes improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.3",
+    "title": "Classes of Fire",
+    "lessons": 20,
+    "slug": "classes-of-fire",
+    "inquiry": "How can classes of fire improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.1",
+    "title": "The Cell",
+    "lessons": 20,
+    "slug": "the-cell",
+    "inquiry": "How can the cell improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.2",
+    "title": "Movement of Materials in and out of the Cell",
+    "lessons": 16,
+    "slug": "movement-of-materials-in-and-out-of-the-cell",
+    "inquiry": "How can movement of materials in and out of the cell improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.3",
+    "title": "Reproduction in Human Beings",
+    "lessons": 18,
+    "slug": "reproduction-in-human-beings",
+    "inquiry": "How can reproduction in human beings improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Force and Energy",
+    "code": "3.1",
+    "title": "Transformation of Energy",
+    "lessons": 20,
+    "slug": "transformation-of-energy",
+    "inquiry": "How can transformation of energy improve life at home, school or in the community?"
+  },
+  {
+    "grade": 8,
+    "subject": "integrated-science",
+    "strand": "Force and Energy",
+    "code": "3.2",
+    "title": "Pressure",
+    "lessons": 16,
+    "slug": "pressure",
+    "inquiry": "How can pressure improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Conservation of Resources",
+    "code": "1.1",
+    "title": "Conserving Animal Feed: Hay",
+    "lessons": 12,
+    "slug": "conserving-animal-feed-hay",
+    "inquiry": "How can conserving animal feed: hay improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Conservation of Resources",
+    "code": "1.2",
+    "title": "Conserving Leftover Food",
+    "lessons": 11,
+    "slug": "conserving-leftover-food",
+    "inquiry": "How can conserving leftover food improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Conservation of Resources",
+    "code": "1.3",
+    "title": "Integrated Farming",
+    "lessons": 12,
+    "slug": "integrated-farming",
+    "inquiry": "How can integrated farming improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.1",
+    "title": "Organic Gardening",
+    "lessons": 14,
+    "slug": "organic-gardening",
+    "inquiry": "How can organic gardening improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.2",
+    "title": "Storage of Crop Produce",
+    "lessons": 10,
+    "slug": "storage-of-crop-produce",
+    "inquiry": "How can storage of crop produce improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Food Production Processes",
+    "code": "2.3",
+    "title": "Cooking Using Flour Mixtures",
+    "lessons": 14,
+    "slug": "cooking-using-flour-mixtures",
+    "inquiry": "How can cooking using flour mixtures improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Hygiene Practices",
+    "code": "3.1",
+    "title": "Cleaning Waste Disposal Facilities",
+    "lessons": 9,
+    "slug": "cleaning-waste-disposal-facilities",
+    "inquiry": "How can cleaning waste disposal facilities improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Hygiene Practices",
+    "code": "3.2",
+    "title": "Disinfecting Clothing and Household Articles",
+    "lessons": 12,
+    "slug": "disinfecting-clothing-and-household-articles",
+    "inquiry": "How can disinfecting clothing and household articles improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Production Techniques",
+    "code": "4.1",
+    "title": "Grafting in Plants",
+    "lessons": 13,
+    "slug": "grafting-in-plants",
+    "inquiry": "How can grafting in plants improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "agriculture",
+    "strand": "Production Techniques",
+    "code": "4.2",
+    "title": "Homemade Sun Dryer",
+    "lessons": 13,
+    "slug": "homemade-sun-dryer",
+    "inquiry": "How can homemade sun dryer improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.1",
+    "title": "Structure of the Atom",
+    "lessons": 14,
+    "slug": "structure-of-the-atom",
+    "inquiry": "How can structure of the atom improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.2",
+    "title": "Metals and Alloys",
+    "lessons": 16,
+    "slug": "metals-and-alloys",
+    "inquiry": "How can metals and alloys improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Mixtures, Elements and Compounds",
+    "code": "1.3",
+    "title": "Water Hardness",
+    "lessons": 14,
+    "slug": "water-hardness",
+    "inquiry": "How can water hardness improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.1",
+    "title": "Nutrition in Plants",
+    "lessons": 18,
+    "slug": "nutrition-in-plants",
+    "inquiry": "How can nutrition in plants improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.2",
+    "title": "Nutrition in Animals",
+    "lessons": 16,
+    "slug": "nutrition-in-animals",
+    "inquiry": "How can nutrition in animals improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.3",
+    "title": "Reproduction in Plants",
+    "lessons": 20,
+    "slug": "reproduction-in-plants",
+    "inquiry": "How can reproduction in plants improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Living Things and their Environment",
+    "code": "2.4",
+    "title": "The Interdependence of Life",
+    "lessons": 18,
+    "slug": "the-interdependence-of-life",
+    "inquiry": "How can the interdependence of life improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Force and Energy",
+    "code": "3.1",
+    "title": "Curved Mirrors",
+    "lessons": 18,
+    "slug": "curved-mirrors",
+    "inquiry": "How can curved mirrors improve life at home, school or in the community?"
+  },
+  {
+    "grade": 9,
+    "subject": "integrated-science",
+    "strand": "Force and Energy",
+    "code": "3.2",
+    "title": "Waves",
+    "lessons": 16,
+    "slug": "waves",
+    "inquiry": "How can waves improve life at home, school or in the community?"
+  }
+];

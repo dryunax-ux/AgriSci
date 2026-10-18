@@ -1,0 +1,3 @@
+"use client";
+import { useState } from "react";
+export default function Quiz({title}:{title:string}){const qs=["Start with a clear inquiry question","Record accurate observations","Work collaboratively and safely"];const [selected,setSelected]=useState<Record<number,boolean>>({});const [done,setDone]=useState(false);return <section className="panel"><h2>Self-marking check</h2>{qs.map((q,i)=><label className="option" key={q}><input type="checkbox" checked={!!selected[i]} onChange={()=>setSelected({...selected,[i]:!selected[i]})}/>{q}</label>)}<button onClick={()=>setDone(true)}>Check</button>{done&&<p>{Object.values(selected).filter(Boolean).length}/3 selected for {title}.</p>}</section>}
