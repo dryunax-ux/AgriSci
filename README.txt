@@ -1,14 +1,21 @@
-Separate Lesson Notes Library Patch
+Timed Question Banks and KJSEA Bank Patch
 
-This does NOT place notes inside the interactive lesson tabs.
+Replace:
+- app/questions/page.tsx
 
 Add:
-- lib/lessonNotes.ts
-- components/LessonNotesMenu.tsx
-- components/LessonNotesMenu.module.css
-- app/notes/page.tsx
-- app/notes/[grade]/[subject]/[substrand]/[lesson]/page.tsx
+- components/TimedStrandQuestionMenu.tsx
+- components/TimedStrandQuestionMenu.module.css
+- app/kjsea/page.tsx
 
-The existing hamburger menu already links to /notes.
+The timed bank uses the existing lib/strandQuestionBanks.ts from Phase 10.
 
-The library imports phase2.ts through phase8.ts, so all those files must remain in lib/. It creates 540 separate note routes and filtering by grade, learning area, strand, sub-strand and lesson.
+Timing rules:
+- 100 questions per strand
+- 20 seconds per question
+- unanswered question at zero seconds is marked missed
+- missed questions advance automatically
+- answered questions show feedback then use Next
+- final report gives correct, incorrect and missed totals
+
+To show KJSEA in the hamburger drawer, add the supplied item from HamburgerMenu_KJSEA_SNIPPET.txt to mainItems in components/HamburgerMenu.tsx.

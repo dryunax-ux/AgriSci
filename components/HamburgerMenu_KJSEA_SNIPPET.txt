@@ -1,0 +1,9 @@
+Add this item inside mainItems in components/HamburgerMenu.tsx, after Question Banks:
+
+{
+  href: "/kjsea",
+  icon: "📝",
+  title: "KJSEA Sample Bank",
+  description: "Timed sample papers, marking schemes and revision",
+  badge: "Upload papers",
+},
