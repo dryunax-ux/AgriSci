@@ -1,0 +1,71 @@
+/* Joachim Teaching Board blended background.
+   Paste this at the VERY END of app/globals.css. */
+
+body {
+  position: relative;
+  isolation: isolate;
+  background: #050814 !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  background-image: url("/branding/joachim-teaching-board-background.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.13;
+  filter: saturate(0.72) contrast(0.88) brightness(0.72) blur(0.6px);
+  transform: scale(1.01);
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(5, 8, 20, 0.76), rgba(5, 8, 20, 0.9)),
+    radial-gradient(circle at 50% 15%, rgba(40, 70, 98, 0.16), transparent 52%);
+  pointer-events: none;
+}
+
+.siteShell,
+.siteContent {
+  position: relative;
+  z-index: 0;
+  background: transparent !important;
+}
+
+main {
+  position: relative;
+}
+
+/* Keep reading surfaces legible above the blended photograph. */
+.panel,
+.card,
+.subject,
+.topic,
+.lessonlist > a {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+@media (max-width: 700px) {
+  body::before {
+    background-position: 58% center;
+    opacity: 0.1;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body::before {
+    opacity: 0.07;
+    filter: brightness(0.65);
+  }
+}

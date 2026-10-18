@@ -1,11 +1,12 @@
-Responsive Centred Footer Patch
+Joachim Teaching Board Blended Background Patch
 
-Replace:
-- app/layout.tsx
+Add:
+- public/branding/joachim-teaching-board-background.png
 
-Then replace any existing footer rules in app/globals.css with the rules in FOOTER_CSS.txt.
+Then copy all CSS from BACKGROUND_CSS.txt and paste it at the VERY END of:
+- app/globals.css
 
-The footer remains horizontally centred on phones, tablets, laptops, desktop monitors and interactive classroom screens. It also stays at the bottom of short pages.
+The photograph is shown as a subtle fixed background with 13% opacity, reduced saturation, lower brightness and a dark overlay. Content remains readable on every screen.
 
-Footer text:
-2026 JOACHIM. All rights reserved.
+To make the image even softer, change opacity: 0.13 to opacity: 0.08.
+To make it slightly clearer, change opacity: 0.13 to opacity: 0.18.
