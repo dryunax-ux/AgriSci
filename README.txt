@@ -1,27 +1,14 @@
-Hamburger Menu Patch
+Separate Lesson Notes Library Patch
 
-This corrects the navigation design requested by the teacher.
+This does NOT place notes inside the interactive lesson tabs.
 
 Add:
-- components/HamburgerMenu.tsx
-- components/HamburgerMenu.module.css
+- lib/lessonNotes.ts
+- components/LessonNotesMenu.tsx
+- components/LessonNotesMenu.module.css
 - app/notes/page.tsx
+- app/notes/[grade]/[subject]/[substrand]/[lesson]/page.tsx
 
-Replace:
-- app/layout.tsx
+The existing hamburger menu already links to /notes.
 
-The top bar will show the JA logo, course name and a three-horizontal-line hamburger button. The old visible Home and Question Banks links are removed from the top bar and placed inside a right-side drawer.
-
-The drawer contains:
-- Home
-- Lesson Notes
-- Question Banks
-- Grade 8 Agriculture
-- Grade 8 Integrated Science
-- Grade 9 Agriculture
-- Grade 9 Integrated Science
-- Strand Assessment
-- Presentation Notes
-
-Keep the Phase 10 /questions page and question-bank files already uploaded.
-If needed, append the CSS from GLOBAL_CSS_ADDITION.txt to app/globals.css.
+The library imports phase2.ts through phase8.ts, so all those files must remain in lib/. It creates 540 separate note routes and filtering by grade, learning area, strand, sub-strand and lesson.
