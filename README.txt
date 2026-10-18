@@ -1,9 +1,9 @@
-Final Global Footer Patch
+Centered Global Footer Patch
 
 Replace:
 - app/layout.tsx
 
-This removes the previous “Curriculum-aligned interactive learning app” footer and replaces it globally with:
-2026 JOACHIM. All rights reserved.
+Then replace any existing .siteFooter and .siteFooter p CSS in app/globals.css with the rules in FOOTER_CSS.txt.
 
-If the footer does not have the intended styling, append the CSS from FOOTER_CSS.txt to app/globals.css.
+The text will appear horizontally centred at the bottom of every page:
+2026 JOACHIM. All rights reserved.

@@ -1,8 +1,13 @@
-Append this CSS to the end of app/globals.css if .siteFooter is not already styled:
+Append this CSS to the end of app/globals.css. If .siteFooter already exists, replace the old .siteFooter rules with these:
 
 .siteFooter {
+  width: 100%;
+  min-height: 78px;
   margin-top: 40px;
-  padding: 24px 18px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   color: #aab5c8;
   background: #090f1b;
@@ -10,7 +15,9 @@ Append this CSS to the end of app/globals.css if .siteFooter is not already styl
 }
 
 .siteFooter p {
-  margin: 0;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.02em;
