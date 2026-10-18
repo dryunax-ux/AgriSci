@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <header className="top">
-          <a className="logo" href="/">JA</a>
+          <a className="logo" href="/" aria-label="JSS AgriScience home">JA</a>
           <div className="brandText">
             <b>JSS AgriScience</b>
             <small>Interactive Grades 8–9</small>
@@ -20,8 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <HamburgerMenu />
           </div>
         </header>
+
         {children}
-        <footer>Curriculum-aligned interactive learning app</footer>
+
+        <footer className="siteFooter">
+          <p>2026 JOACHIM. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );

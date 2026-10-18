@@ -1,0 +1,17 @@
+Append this CSS to the end of app/globals.css if .siteFooter is not already styled:
+
+.siteFooter {
+  margin-top: 40px;
+  padding: 24px 18px;
+  text-align: center;
+  color: #aab5c8;
+  background: #090f1b;
+  border-top: 1px solid #2f3b50;
+}
+
+.siteFooter p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}

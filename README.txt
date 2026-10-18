@@ -1,13 +1,9 @@
-KJSEA Digital Paper Display Fix
+Final Global Footer Patch
 
 Replace:
-- components/KjseaBank.tsx
-- app/kjsea/[paper]/page.tsx
+- app/layout.tsx
 
-The KJSEA bank cards now open /digital directly. Any old paper URL also redirects automatically to its digital version.
+This removes the previous “Curriculum-aligned interactive learning app” footer and replaces it globally with:
+2026 JOACHIM. All rights reserved.
 
-Required existing files from the digital paper package:
-- lib/kjseaDigitalPapers.ts
-- components/KjseaDigitalPaper.tsx
-- components/KjseaDigitalPaper.module.css
-- app/kjsea/[paper]/digital/page.tsx
+If the footer does not have the intended styling, append the CSS from FOOTER_CSS.txt to app/globals.css.
