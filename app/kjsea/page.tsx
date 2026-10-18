@@ -1,2 +1,51 @@
-export const metadata={title:"KJSEA Sample Bank | JSS AgriScience"};
-export default function KjseaPage(){return <main><section className="hero"><span className="kicker">KJSEA SAMPLE BANK</span><h1>KJSEA sample papers</h1><p>This separate bank is ready for the sample papers that will be uploaded. Each uploaded paper can be converted into a timed interactive paper, marking scheme, topic analysis and revision bank.</p></section><section className="panel phasebadge"><h2>Planned paper workflow</h2><ol><li>Upload a KJSEA sample paper in PDF, Word or image format.</li><li>The paper is mapped to grade, learning area, strand and specific learning outcome.</li><li>Questions are reproduced as original practice items where ownership allows, or transformed into new equivalent questions.</li><li>Objective items receive automatic marking.</li><li>Structured questions receive marking points and teacher review.</li><li>A timed full-paper mode and topic-remediation report are created.</li></ol></section><section className="panel"><h2>Bank status</h2><p>No sample papers have been added yet. Upload the first sample paper in this conversation and identify the learning area if the file name is not clear.</p></section><div className="subjectGrid"><a className="subject" href="/questions"><i>✅</i><h3>Curriculum Question Banks</h3><p>Open the current 100-question strand banks</p><strong>→</strong></a><a className="subject" href="/notes"><i>📘</i><h3>Lesson Notes</h3><p>Review lesson notes before attempting a paper</p><strong>→</strong></a></div></main>}
+export const metadata = { title: "KJSEA Sample Paper Bank | JSS AgriScience" };
+
+export default function KjseaPage() {
+  return <main>
+    <section className="hero">
+      <span className="kicker">SEPARATE ASSESSMENT BANK</span>
+      <h1>KJSEA Sample Paper Bank</h1>
+      <p>This area is completely separate from the curriculum strand question banks. Only uploaded KJSEA sample papers and new equivalent practice papers will appear here.</p>
+    </section>
+
+    <div className="metrics">
+      <div><b>0</b><span>sample papers added</span></div>
+      <div><b>2</b><span>learning areas planned</span></div>
+      <div><b>Separate</b><span>from strand banks</span></div>
+    </div>
+
+    <section className="panel phasebadge">
+      <h2>Bank currently awaiting papers</h2>
+      <p>Upload the first KJSEA sample paper in the conversation. The paper will be added here with its own title, year or source label, learning area, duration, marks and marking scheme.</p>
+    </section>
+
+    <div className="subjectGrid">
+      <section className="subject">
+        <i>🌾</i><span className="kicker">KJSEA SAMPLE PAPERS</span><h3>Agriculture</h3>
+        <p>Uploaded Agriculture papers, marking schemes, timed attempts and topic analysis will appear here.</p>
+      </section>
+      <section className="subject">
+        <i>🔬</i><span className="kicker">KJSEA SAMPLE PAPERS</span><h3>Integrated Science</h3>
+        <p>Uploaded Integrated Science papers, marking schemes, timed attempts and topic analysis will appear here.</p>
+      </section>
+    </div>
+
+    <section className="panel">
+      <h2>What each uploaded paper will receive</h2>
+      <ul>
+        <li>A separate paper card inside this bank</li>
+        <li>Original paper details and instructions</li>
+        <li>Timed full-paper mode</li>
+        <li>Automatic marking for objective questions</li>
+        <li>Teacher marking guide for structured questions</li>
+        <li>Strand and sub-strand performance analysis</li>
+        <li>New equivalent revision questions</li>
+      </ul>
+    </section>
+
+    <section className="panel">
+      <h2>Go to the other assessment bank</h2>
+      <p>The curriculum strand questions remain at <a href="/questions"><b>Curriculum Question Banks →</b></a>. Those 100-question timed banks will not be mixed with KJSEA papers.</p>
+    </section>
+  </main>;
+}
