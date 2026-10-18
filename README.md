@@ -1,8 +1,11 @@
-# JSS AgriScience Grades 8–9 · Phase 2
+# JSS AgriScience Grades 8–9 · Phase 3
 
-Adds 19 complete interactive lessons for Grade 8 Agriculture, Conservation of Resources:
-- 10 Soil Conservation Measures lessons
-- 9 Water Harvesting and Storage lessons
-- 57 topic checks, touch matching, team scoring and video prompts
+Phase 3 adds 59 detailed Grade 8 Agriculture Food Production lessons:
+- Kitchen and Backyard Gardening: 9
+- Poultry Rearing in a Fold: 11
+- Crop Pest and Disease Control: 10
+- Preparation of Animal Products: 9
+- Preserving Animal Products: 9
+- Cooking: Preparing a Balanced Meal: 11
 
-Replace all files in the existing GitHub repository with this package, or upload the changed files. Vercel will redeploy automatically and retain the same production domain.
+Together with Phase 2, the app now contains 78 detailed interactive lessons. Upload all extracted files to the existing GitHub repository and commit to main. Vercel will keep the same domain.
