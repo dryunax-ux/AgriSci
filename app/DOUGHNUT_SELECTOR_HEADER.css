@@ -1,0 +1,57 @@
+/* Paste at the VERY END of app/globals.css. */
+/* Add className="doughnutSelector" to the round doughnut selector, not the chart. */
+
+.top {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
+}
+
+.brandText {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+/* Pushes the selector to the far right and leaves space after the name. */
+.doughnutSelector {
+  position: static !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  flex: 0 0 auto !important;
+  transform: none !important;
+}
+
+/* If the doughnut selector and hamburger menu share the right side. */
+.menuSlot {
+  margin-left: 10px !important;
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 600px) {
+  .top {
+    gap: 9px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .brandText {
+    max-width: calc(100vw - 155px) !important;
+  }
+
+  .brandText b,
+  .brandText small {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .doughnutSelector {
+    margin-left: auto !important;
+  }
+
+  .menuSlot {
+    margin-left: 6px !important;
+  }
+}

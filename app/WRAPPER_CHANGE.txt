@@ -1,0 +1,23 @@
+Find the existing round doughnut selector in the header and add this class:
+
+className="doughnutSelector"
+
+Example:
+
+<header className="top">
+  <a className="logo" href="/">JTB</a>
+  <div className="brandText">
+    <b>Joachim Teaching Board</b>
+    <small>Interactive Grades 8-9</small>
+  </div>
+
+  <button className="doughnutSelector" aria-label="Open selector">
+    ...existing doughnut selector...
+  </button>
+
+  <div className="menuSlot">
+    <HamburgerMenu />
+  </div>
+</header>
+
+Do not use position: fixed. The selector remains inside the header, but margin-left: auto pushes it to the far right and creates a clear space after the name.
