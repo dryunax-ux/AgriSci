@@ -1,12 +1,41 @@
+/* Push the complete menu slot to the far-right of the header. */
+:global(.top) {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
+}
+
+:global(.brandText) {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+}
+
+:global(.menuSlot) {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+.hamburgerRoot {
+  position: relative;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
 
 .menuButton {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   display: grid;
   place-items: center;
-  border: 1px solid #38465d;
-  border-radius: 14px;
-  background: #151e2e;
+  padding: 0;
+  border: 1px solid #ff747c;
+  border-radius: 15px;
+  background: #172236;
   color: #ffffff;
   cursor: pointer;
   touch-action: manipulation;
@@ -14,19 +43,22 @@
 
 .menuButton:hover,
 .menuButton:focus-visible {
-  border-color: #ff7179;
-  background: #202b40;
-  outline: none;
+  background: #22314a;
+  border-color: #ff9ca2;
+  outline: 3px solid rgba(255, 116, 124, 0.22);
+  outline-offset: 2px;
 }
 
 .lines {
-  width: 23px;
+  width: 24px;
   display: grid;
   gap: 5px;
 }
 
 .lines span {
+  width: 100%;
   height: 3px;
+  display: block;
   background: currentColor;
   border-radius: 999px;
   transition: transform 180ms ease, opacity 180ms ease;
@@ -47,18 +79,19 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 990;
   border: 0;
-  background: rgba(1, 5, 12, 0.67);
+  background: rgba(1, 5, 12, 0.7);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
 .drawer {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 100;
-  width: min(390px, 90vw);
+  z-index: 1000;
+  width: min(390px, 92vw);
   height: 100dvh;
   padding: 19px;
   overflow-y: auto;
@@ -68,6 +101,7 @@
   box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
   transform: translateX(102%);
   transition: transform 220ms ease;
+  box-sizing: border-box;
 }
 
 .drawerOpen {
@@ -77,8 +111,8 @@
 .drawerHeader {
   display: flex;
   justify-content: space-between;
-  gap: 14px;
   align-items: center;
+  gap: 14px;
   padding-bottom: 16px;
   border-bottom: 1px solid #2e3a4e;
 }
@@ -89,15 +123,17 @@
 }
 
 .drawerHeader small {
+  margin-top: 3px;
   color: #9eabc1;
 }
 
 .closeButton {
   width: 44px;
   height: 44px;
+  flex: 0 0 auto;
   border: 1px solid #394962;
   border-radius: 13px;
-  color: white;
+  color: #ffffff;
   background: #1a2436;
   cursor: pointer;
   font-size: 1.35rem;
@@ -118,7 +154,6 @@
 }
 
 .link {
-  position: relative;
   display: grid;
   grid-template-columns: 45px 1fr auto;
   gap: 12px;
@@ -166,18 +201,6 @@
   font-weight: 900;
 }
 
-.badge {
-  display: inline-flex;
-  width: fit-content;
-  margin-top: 5px;
-  padding: 3px 7px;
-  color: #9cebcf;
-  background: #12372e;
-  border-radius: 999px;
-  font-size: 0.68rem;
-  font-weight: 900;
-}
-
 .gradeGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -190,7 +213,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 14px;
-  color: white;
+  color: #ffffff;
   text-decoration: none;
   background: #131c2b;
   border: 1px solid #303e55;
@@ -207,20 +230,27 @@
   font-size: 1.5rem;
 }
 
-.footerNote {
-  margin-top: 22px;
-  padding: 14px;
-  color: #aeb9cb;
-  background: #0d1522;
-  border: 1px solid #29374b;
-  border-radius: 15px;
-  font-size: 0.85rem;
-}
-
 @media (max-width: 600px) {
+  :global(.top) {
+    gap: 9px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  :global(.brandText) {
+    max-width: calc(100vw - 132px) !important;
+  }
+
+  :global(.brandText b),
+  :global(.brandText small) {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
   .menuButton {
-    width: 45px;
-    height: 45px;
+    width: 46px;
+    height: 46px;
   }
 
   .drawer {
