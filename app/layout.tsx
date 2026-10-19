@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 letterSpacing: "0.02em",
               }}
             >
-              2026 JOACHIM TEACHING BOARD. All rights reserved.
+              © 2026 JOACHIM TEACHING BOARD. All rights reserved.
             </span>
           </footer>
         </div>
