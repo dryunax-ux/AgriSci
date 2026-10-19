@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { buildDigitalNote } from "../lib/digitalNoteEngine";
 
 type Props = {
   facts: readonly string[];
@@ -9,151 +10,199 @@ type Props = {
 
 type MCQ = {
   prompt: string;
-  options: string[];
+  options: [string, string, string, string];
   answer: number;
   explanation: string;
+  noteSection: string;
 };
 
-type TFQuestion = {
+type TrueFalse = {
   statement: string;
   answer: boolean;
   explanation: string;
+  noteSection: string;
 };
 
-const mcqPrompts = [
-  "Which statement is scientifically correct?",
-  "Which idea best explains this lesson?",
-  "Which statement should a learner include in a conclusion?",
-  "Which statement is supported by the lesson evidence?",
-  "Which statement is suitable for a class presentation?",
-];
+function unique(items: string[]) {
+  return Array.from(new Set(items.map((item) => item.trim()).filter(Boolean)));
+}
 
-const genericDistractors = [
-  "Evidence is unnecessary when the answer sounds familiar.",
-  "Every situation should be handled in exactly the same way.",
-  "Safety checks can be skipped when an activity is simple.",
-  "A conclusion should be based only on personal preference.",
-  "Reliable records are not needed during an investigation.",
-  "The first idea suggested is always the correct one.",
-];
-
-function makeFalseStatement(fact: string, index: number) {
-  const openings = [
-    "It is incorrect to claim that ",
-    "Evidence does not support the claim that ",
-    "A learner should reject the idea that ",
+function opposite(statement: string, variant: number) {
+  const replacements: Array<[RegExp, string]> = [
+    [/\bslows?\b/i, "speeds up"],
+    [/\breduces?\b/i, "increases"],
+    [/\bincreases?\b/i, "reduces"],
+    [/\bprotects?\b/i, "damages"],
+    [/\bcovered\b/i, "uncovered"],
+    [/\bclean\b/i, "contaminated"],
+    [/\bsafe\b/i, "unsafe"],
+    [/\bacross the slope\b/i, "down the slope"],
+    [/\balong the contour\b/i, "directly down the slope"],
+    [/\bshould\b/i, "should not"],
+    [/\bmust\b/i, "must not"],
+    [/\bcorrect\b/i, "incorrect"],
+    [/\bregular\b/i, "unnecessary"],
+    [/\bstable\b/i, "unstable"],
+    [/\bappropriate\b/i, "unrelated"],
   ];
-  return `${openings[index % openings.length]}${fact.charAt(0).toLowerCase()}${fact.slice(1)}.`;
+
+  for (let offset = 0; offset < replacements.length; offset += 1) {
+    const [pattern, replacement] = replacements[(variant + offset) % replacements.length];
+    if (pattern.test(statement)) return statement.replace(pattern, replacement);
+  }
+
+  const fallbacks = [
+    `The opposite practice should always be used instead of this note: ${statement}`,
+    `This action can be ignored without affecting the result: ${statement}`,
+    `No evidence or safety check is needed when applying this idea: ${statement}`,
+  ];
+  return fallbacks[variant % fallbacks.length];
+}
+
+function buildOptions(correct: string, index: number): [string, string, string, string] {
+  const distractors = unique([
+    opposite(correct, index),
+    opposite(correct, index + 5),
+    opposite(correct, index + 10),
+  ]);
+
+  while (distractors.length < 3) {
+    distractors.push(`An unrelated method should replace the note: ${correct}`);
+  }
+
+  const answer = index % 4;
+  const options = distractors.slice(0, 3);
+  options.splice(answer, 0, correct);
+  return options as [string, string, string, string];
 }
 
 export default function LessonQuiz({ facts, title }: Props) {
-  const safeFacts = facts.length >= 3
-    ? [...facts]
-    : [
-        ...facts,
-        "Accurate observations support a conclusion",
-        "Safe procedures should be followed",
-        "Evidence should be recorded clearly",
-      ].slice(0, 3);
+  const digitalNote = useMemo(
+    () => buildDigitalNote(title, [], facts),
+    [title, facts],
+  );
 
-  const mcqs = useMemo<MCQ[]>(() => {
-    return Array.from({ length: 15 }, (_, index) => {
-      const correct = safeFacts[index % safeFacts.length];
-      const distractorStart = (index * 2) % genericDistractors.length;
-      const distractors = [
-        genericDistractors[distractorStart],
-        genericDistractors[(distractorStart + 1) % genericDistractors.length],
-        genericDistractors[(distractorStart + 2) % genericDistractors.length],
-      ];
-      const answer = index % 4;
-      const options = [...distractors];
-      options.splice(answer, 0, correct);
-      return {
-        prompt: `${index + 1}. ${mcqPrompts[index % mcqPrompts.length]}`,
-        options,
-        answer,
-        explanation: `${correct} This is the lesson idea supported by the notes and activity.`,
-      };
-    });
-  }, [safeFacts]);
+  const noteSources = useMemo(
+    () =>
+      unique([
+        ...digitalNote.explanations,
+        ...digitalNote.summary,
+        ...digitalNote.procedure,
+        ...digitalNote.safety,
+      ]),
+    [digitalNote],
+  );
 
-  const trueFalse = useMemo<TFQuestion[]>(() => {
-    return Array.from({ length: 15 }, (_, index) => {
-      const fact = safeFacts[index % safeFacts.length];
-      const isTrue = index % 2 === 0;
-      return {
-        statement: isTrue ? fact : makeFalseStatement(fact, index),
-        answer: isTrue,
-        explanation: isTrue
-          ? `${fact} This statement agrees with the lesson.`
-          : `The statement is false. The supported lesson statement is: ${fact}`,
-      };
-    });
-  }, [safeFacts]);
+  const mcqs = useMemo<MCQ[]>(
+    () =>
+      Array.from({ length: 15 }, (_, index) => {
+        const sections = [
+          { name: "Core Notes", values: digitalNote.explanations },
+          { name: "Summary", values: digitalNote.summary },
+          { name: "Process", values: digitalNote.procedure },
+          { name: "Safety", values: digitalNote.safety },
+        ];
+        const section = sections[index % sections.length];
+        const correct =
+          section.values[Math.floor(index / sections.length) % section.values.length] ||
+          noteSources[index % noteSources.length];
+        const answer = index % 4;
+
+        const prompts = [
+          `Which statement agrees with the ${section.name.toLowerCase()} for ${title.toLowerCase()}?`,
+          `Which option should a learner select after studying the ${section.name.toLowerCase()}?`,
+          `Which statement correctly applies the lesson notes on ${title.toLowerCase()}?`,
+          `Which conclusion is supported by the ${section.name.toLowerCase()}?`,
+        ];
+
+        return {
+          prompt: `${index + 1}. ${prompts[index % prompts.length]}`,
+          options: buildOptions(correct, index),
+          answer,
+          explanation: correct,
+          noteSection: section.name,
+        };
+      }),
+    [digitalNote, noteSources, title],
+  );
+
+  const trueFalse = useMemo<TrueFalse[]>(
+    () =>
+      Array.from({ length: 15 }, (_, index) => {
+        const correctStatement = noteSources[(index * 2) % noteSources.length];
+        const isTrue = index % 2 === 0;
+        return {
+          statement: isTrue ? correctStatement : opposite(correctStatement, index),
+          answer: isTrue,
+          explanation: isTrue
+            ? correctStatement
+            : `The digital notes state: ${correctStatement}`,
+          noteSection:
+            index % 4 === 0
+              ? "Core Notes"
+              : index % 4 === 1
+                ? "Process"
+                : index % 4 === 2
+                  ? "Safety"
+                  : "Summary",
+        };
+      }),
+    [noteSources],
+  );
 
   const [mcqAnswers, setMcqAnswers] = useState<Record<number, number>>({});
   const [tfAnswers, setTfAnswers] = useState<Record<number, boolean>>({});
   const [matchAnswers, setMatchAnswers] = useState<Record<number, number>>({});
   const [sortAnswers, setSortAnswers] = useState<Record<number, string>>({});
-  const [applicationAnswer, setApplicationAnswer] = useState("");
-  const [exitAnswer, setExitAnswer] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [application, setApplication] = useState("");
+  const [exitTicket, setExitTicket] = useState("");
+  const [marked, setMarked] = useState(false);
+
+  const matchingItems = digitalNote.explanations.slice(0, 3);
+  const processItems = digitalNote.procedure.slice(0, 3);
 
   const mcqScore = mcqs.reduce(
-    (score, question, index) => score + (mcqAnswers[index] === question.answer ? 1 : 0),
+    (score, question, index) =>
+      score + (mcqAnswers[index] === question.answer ? 1 : 0),
     0,
   );
   const tfScore = trueFalse.reduce(
-    (score, question, index) => score + (tfAnswers[index] === question.answer ? 1 : 0),
+    (score, question, index) =>
+      score + (tfAnswers[index] === question.answer ? 1 : 0),
     0,
   );
-  const matchScore = safeFacts.reduce(
+  const matchScore = matchingItems.reduce(
     (score, _, index) => score + (matchAnswers[index] === index ? 1 : 0),
     0,
   );
-  const sortItems = [
-    "Make a prediction",
-    "Collect or examine evidence",
-    "Explain the finding",
-  ];
-  const sortScore = sortItems.reduce(
-    (score, _, index) => score + (sortAnswers[index] === String(index + 1) ? 1 : 0),
+  const sortScore = processItems.reduce(
+    (score, _, index) =>
+      score + (sortAnswers[index] === String(index + 1) ? 1 : 0),
     0,
   );
-  const objectiveScore = mcqScore + tfScore + matchScore + sortScore;
-  const objectiveTotal = 15 + 15 + safeFacts.length + sortItems.length;
-
-  function submitBank() {
-    setSubmitted(true);
-    try {
-      localStorage.setItem(
-        `question-bank-${title}`,
-        JSON.stringify({ mcqScore, tfScore, matchScore, sortScore, objectiveTotal }),
-      );
-    } catch {
-      // The bank still works when browser storage is unavailable.
-    }
-  }
+  const objectiveTotal = 30 + matchingItems.length + processItems.length;
 
   return (
     <section className="panel questionbank">
-      <span className="kicker">EXPANDED QUESTION BANK</span>
-      <h2>{title}</h2>
+      <span className="kicker">ASSESSMENT FROM THIS LESSON&apos;S DIGITAL NOTES</span>
+      <h2>{title}: Notes-based questions</h2>
       <p>
-        This bank contains <b>15 multiple-choice</b>, <b>15 true-or-false</b>,
-        and one each of matching, sorting, application and exit-ticket questions.
+        The questions below are generated from the same Core Notes, Process,
+        Safety and Summary sections shown in this lesson.
       </p>
 
       <details open>
-        <summary>15 Multiple-choice questions</summary>
+        <summary>15 multiple-choice questions</summary>
         {mcqs.map((question, index) => (
           <fieldset key={index}>
-            <legend>{question.prompt}</legend>
+            <legend>
+              {question.prompt} <small>Source: {question.noteSection}</small>
+            </legend>
             {question.options.map((option, optionIndex) => (
               <label
-                key={`${index}-${optionIndex}`}
+                key={optionIndex}
                 className={
-                  submitted
+                  marked
                     ? optionIndex === question.answer
                       ? "correct"
                       : mcqAnswers[index] === optionIndex
@@ -170,24 +219,31 @@ export default function LessonQuiz({ facts, title }: Props) {
                     setMcqAnswers({ ...mcqAnswers, [index]: optionIndex })
                   }
                 />
-                {option}
+                <b>{String.fromCharCode(65 + optionIndex)}.</b> {option}
               </label>
             ))}
-            {submitted && <p className="explain">{question.explanation}</p>}
+            {marked && (
+              <p className="explain">
+                <b>Answer from {question.noteSection}:</b> {question.explanation}
+              </p>
+            )}
           </fieldset>
         ))}
       </details>
 
       <details>
-        <summary>15 True-or-false questions</summary>
+        <summary>15 true-or-false questions</summary>
         {trueFalse.map((question, index) => (
           <fieldset key={index}>
-            <legend>{index + 1}. {question.statement}</legend>
+            <legend>
+              {index + 1}. {question.statement}{" "}
+              <small>Source: {question.noteSection}</small>
+            </legend>
             {[true, false].map((choice) => (
               <label
                 key={String(choice)}
                 className={
-                  submitted
+                  marked
                     ? choice === question.answer
                       ? "correct"
                       : tfAnswers[index] === choice
@@ -200,46 +256,49 @@ export default function LessonQuiz({ facts, title }: Props) {
                   type="radio"
                   name={`tf-${title}-${index}`}
                   checked={tfAnswers[index] === choice}
-                  onChange={() => setTfAnswers({ ...tfAnswers, [index]: choice })}
+                  onChange={() =>
+                    setTfAnswers({ ...tfAnswers, [index]: choice })
+                  }
                 />
                 {choice ? "True" : "False"}
               </label>
             ))}
-            {submitted && <p className="explain">{question.explanation}</p>}
+            {marked && <p className="explain">{question.explanation}</p>}
           </fieldset>
         ))}
       </details>
 
       <details>
-        <summary>1 Matching question</summary>
-        <p>Match each lesson statement to its numbered meaning.</p>
-        {safeFacts.map((fact, index) => (
-          <label className="option" key={fact}>
-            <b>{String.fromCharCode(65 + index)}.</b> {fact}
+        <summary>1 matching activity from the Core Notes</summary>
+        {matchingItems.map((item, index) => (
+          <label className="option" key={item}>
+            <b>{String.fromCharCode(65 + index)}.</b> {item}
             <select
               value={matchAnswers[index] ?? ""}
               onChange={(event) =>
-                setMatchAnswers({ ...matchAnswers, [index]: Number(event.target.value) })
+                setMatchAnswers({
+                  ...matchAnswers,
+                  [index]: Number(event.target.value),
+                })
               }
             >
-              <option value="">Choose</option>
-              {safeFacts.map((_, choiceIndex) => (
+              <option value="">Match</option>
+              {matchingItems.map((_, choiceIndex) => (
                 <option key={choiceIndex} value={choiceIndex}>
-                  Meaning {choiceIndex + 1}
+                  Note {choiceIndex + 1}
                 </option>
               ))}
             </select>
           </label>
         ))}
         <ol>
-          {safeFacts.map((fact) => <li key={fact}>{fact}</li>)}
+          {matchingItems.map((item) => <li key={item}>{item}</li>)}
         </ol>
       </details>
 
       <details>
-        <summary>1 Sorting or sequencing question</summary>
-        <p>Assign the correct position to each stage.</p>
-        {sortItems.map((item, index) => (
+        <summary>1 sequencing activity from the Process notes</summary>
+        {processItems.map((item, index) => (
           <label className="option" key={item}>
             {item}
             <select
@@ -258,45 +317,40 @@ export default function LessonQuiz({ facts, title }: Props) {
       </details>
 
       <details>
-        <summary>1 Application question</summary>
+        <summary>1 application question</summary>
         <p>
-          A school team must apply <b>{title.toLowerCase()}</b> using locally
-          available materials. Describe the team&apos;s action, evidence, safety
-          control and expected result.
+          Using the lesson notes and interactive figure, explain how {title.toLowerCase()}
+          could be applied at school or in the local community. Include an action,
+          reason, safety control and expected result.
         </p>
         <textarea
           rows={5}
-          value={applicationAnswer}
-          onChange={(event) => setApplicationAnswer(event.target.value)}
-          placeholder="Write the application response here..."
+          value={application}
+          onChange={(event) => setApplication(event.target.value)}
         />
-        {submitted && (
-          <p className="explain">
-            Teacher check: award one mark each for a relevant action, supporting
-            evidence, safety control and reasonable expected result.
-          </p>
-        )}
       </details>
 
       <details>
-        <summary>1 Exit-ticket question</summary>
+        <summary>1 exit ticket</summary>
         <p>
-          State one idea learned, one piece of evidence and one question still
-          remaining about {title.toLowerCase()}.
+          Write one important idea, one process step, one safety point and one
+          question you still have about {title.toLowerCase()}.
         </p>
         <textarea
           rows={4}
-          value={exitAnswer}
-          onChange={(event) => setExitAnswer(event.target.value)}
-          placeholder="Idea, evidence and remaining question..."
+          value={exitTicket}
+          onChange={(event) => setExitTicket(event.target.value)}
         />
       </details>
 
-      <button className="primary" onClick={submitBank}>Mark question bank</button>
-      {submitted && (
+      <button className="primary" onClick={() => setMarked(true)}>
+        Mark notes-based questions
+      </button>
+
+      {marked && (
         <output>
-          Objective score: {objectiveScore}/{objectiveTotal}. Written application
-          and exit-ticket responses require teacher review.
+          Objective score: {mcqScore + tfScore + matchScore + sortScore}/
+          {objectiveTotal}. Application and exit-ticket responses require teacher review.
         </output>
       )}
     </section>
