@@ -1,9 +1,18 @@
-import {redirect} from "next/navigation";
-import {kjseaPapers} from "../../../lib/kjseaPapers";
+import { notFound } from "next/navigation";
+import KjseaDigitalPaper from "../../../components/KjseaDigitalPaper";
+import { getKjseaPaper } from "../../../lib/kjseaPapers";
 
-export function generateStaticParams(){return kjseaPapers.map(p=>({paper:p.id}))}
+export default async function KjseaPaperPage({
+  params,
+}: {
+  params: Promise<{ paper: string }>;
+}) {
+  const { paper: slug } = await params;
+  const selectedPaper = getKjseaPaper(slug);
 
-export default async function PaperPage({params}:{params:Promise<{paper:string}>}){
- const {paper}=await params;
- redirect(`/kjsea/${paper}/digital`);
+  if (!selectedPaper) {
+    notFound();
+  }
+
+  return <KjseaDigitalPaper paper={selectedPaper} />;
 }
