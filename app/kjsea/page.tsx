@@ -1,3 +1,2 @@
-import KjseaBank from "../../components/KjseaBank";
-export const metadata={title:"KJSEA Sample Paper Bank | JSS AgriScience"};
-export default function KjseaPage(){return <KjseaBank/>}
+import {allKjseaPapers} from "../../lib/kjseaAllSixPapers";
+export default function KjseaBankPage(){return <main><section className="hero"><span className="kicker">KJSEA SAMPLE PAPER BANK</span><h1>Grades 7, 8 and 9</h1><p>Agriculture and Integrated Science digital sample papers.</p></section>{[7,8,9].map(g=><section key={g}><h2>Grade {g}</h2><div className="subjectGrid">{allKjseaPapers.filter(p=>p.grade===g).map(p=><a className="subject" href={`/kjsea/paper/${p.slug}`} key={p.slug}><span className="kicker">GRADE {g}</span><h3>{p.area}</h3><p>{p.mcq.length} timed MCQs · {p.structured.length} structured questions</p><strong>Open digital paper →</strong></a>)}</div></section>)}</main>}
