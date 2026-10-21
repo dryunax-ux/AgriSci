@@ -1,28 +1,24 @@
-# KJSEA printed-question-number image correction
+# Section B question-number and image correction
 
-This patch fixes diagrams that are in the correct grade and learning area but shown under the wrong question number.
+## Cause
 
-## Why the mismatch happened
+Section B questions were stored as a separate array and often had local IDs such as 1, 2, 3. The display and image lookup treated those local IDs as printed paper numbers. For a 20-question Section A, Section B item 1 must display as Question 21, not Question 1.
 
-The previous logic associated figures with an array position such as `questions[index]`. Section A and Section B use separate arrays, so index 0 can mean Question 1 in Section A and Question 21 in Section B. The new logic uses two values only:
+## Add/replace
 
-1. exact paper slug;
-2. printed question number from the source paper.
+- Add `lib/kjseaQuestionNumbering.ts`
+- Replace `lib/kjseaQuestionImageMap.ts`
+- Replace `components/KjseaQuestionFigure.tsx`
 
-## Add these files
+## Registry correction
 
-- `lib/kjseaQuestionImageMap.ts`
-- `components/KjseaQuestionFigure.tsx`
-
-## Apply the mapping to the paper registry
-
-Open `lib/kjseaPapers.ts`. Import the helper:
+In `lib/kjseaPapers.ts` import:
 
 ```ts
-import { withCorrectKjseaQuestionImages } from "./kjseaQuestionImageMap";
+import { normalizeKjseaPaper } from "./kjseaQuestionImageMap";
 ```
 
-Wrap every imported paper when building the registry:
+Normalize the six-paper registry:
 
 ```ts
 export const kjseaPapers = [
@@ -32,50 +28,77 @@ export const kjseaPapers = [
   grade8SciencePaper,
   grade9AgriculturePaper,
   grade9SciencePaper,
-].map(withCorrectKjseaQuestionImages);
+].map(normalizeKjseaPaper);
 ```
 
-If your registry already exports a differently named array, keep its name and only add `.map(withCorrectKjseaQuestionImages)`.
+Remove any earlier `.map(withCorrectKjseaQuestionImages)` call.
 
-## Display the image by printed question number
+## Component correction
 
-In `components/KjseaDigitalPaper.tsx`, do not select a figure by `currentIndex`, `index + 1`, or a combined-array position. Import:
+In `components/KjseaDigitalPaper.tsx`, the visible number and figure must use `printedNumber`.
+
+For Section A:
+
+```tsx
+const question = paper.mcq[currentIndex];
+const printedNumber = Number(question.printedNumber ?? currentIndex + 1);
+```
+
+For Section B:
+
+```tsx
+{paper.structured.map((question, index) => {
+  const printedNumber = Number(
+    question.printedNumber ?? paper.mcq.length + index + 1
+  );
+
+  return (
+    <section key={printedNumber}>
+      <h3>Question {printedNumber}</h3>
+      <p>{String(question.q ?? question.prompt ?? question.question ?? "")}</p>
+      <KjseaQuestionFigure
+        paperSlug={paper.slug}
+        printedNumber={printedNumber}
+        alt={`${paper.title}, question ${printedNumber}`}
+      />
+      {/* existing answer fields */}
+    </section>
+  );
+})}
+```
+
+Import the figure component:
 
 ```ts
 import KjseaQuestionFigure from "./KjseaQuestionFigure";
 ```
 
-Then render it after the question text and before the options/answer spaces:
+## Remove old numbering logic
 
-```tsx
-<KjseaQuestionFigure
-  paperSlug={paper.slug}
-  questionNumber={Number(question.id ?? question.number)}
-  alt={`${paper.title}, question ${question.id ?? question.number}`}
-/>
+Delete Section B code using any of these as the visible paper question number:
+
+```ts
+index + 1
+question.id
+question.number
 ```
 
-Remove any old image lookup using `currentIndex`, `questionIndex`, `index + 1`, or `paper.images[index]`.
+unless it reads the normalized `printedNumber` first.
 
-## CSS
+## Expected Section B starts
 
-Copy `KJSEA_IMAGE_FIX_CSS.txt` to the end of `app/globals.css`.
+- Grade 7 Agriculture: Q21
+- Grade 7 Science: Q21
+- Grade 8 Agriculture: Q21
+- Grade 8 Science: Q21
+- Grade 9 Agriculture: Q31
+- Grade 9 Science: Q31
 
-## Public image paths expected
+## Visual check
 
-The deployed board already shows the supplied images. This patch expects the existing assets under:
-
-- `public/kjsea/images/grade-7-agriculture/q2.jpg`
-- `public/kjsea/images/grade-7-science/q2.jpg`
-- and the corresponding paper/question folders listed in the map.
-
-## Verification
-
-After Vercel shows **Ready**, hard-refresh and test:
-
-- Grade 7 Agriculture: Q2, Q8, Q14, Q20, Q21, Q25, Q27
-- Grade 7 Science: Q2, Q10, Q17, Q21, Q24, Q29, Q30
-- Grade 8 Agriculture: Q3, Q5, Q15, Q19, Q21, Q25, Q28
-- Grade 8 Science: Q7, Q12, Q18, Q21, Q27, Q29
-- Grade 9 Agriculture: Q4, Q7, Q14, Q19, Q27, Q31, Q38
-- Grade 9 Science: Q1, Q10, Q11, Q13, Q18, Q20, Q23, Q27, Q28, Q31, Q33, Q36, Q40
+- Grade 7 Agriculture Q21, Q25, Q27
+- Grade 7 Science Q21, Q24, Q29, Q30
+- Grade 8 Agriculture Q21, Q25, Q28
+- Grade 8 Science Q21, Q27, Q29
+- Grade 9 Agriculture Q31, Q38
+- Grade 9 Science Q31, Q33, Q36, Q40
