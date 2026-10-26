@@ -1,24 +1,24 @@
-# Section B question-number and image correction
+# Restore Joachim's original KJSEA manual mappings
 
-## Cause
+This patch ignores all old local IDs and stale image assignments.
 
-Section B questions were stored as a separate array and often had local IDs such as 1, 2, 3. The display and image lookup treated those local IDs as printed paper numbers. For a 20-question Section A, Section B item 1 must display as Question 21, not Question 1.
+## 1. Add the file
 
-## Add/replace
+Upload:
 
-- Add `lib/kjseaQuestionNumbering.ts`
-- Replace `lib/kjseaQuestionImageMap.ts`
-- Replace `components/KjseaQuestionFigure.tsx`
-
-## Registry correction
-
-In `lib/kjseaPapers.ts` import:
-
-```ts
-import { normalizeKjseaPaper } from "./kjseaQuestionImageMap";
+```text
+lib/kjseaRestoreManualMappings.ts
 ```
 
-Normalize the six-paper registry:
+## 2. Update `lib/kjseaPapers.ts`
+
+Import:
+
+```ts
+import { restoreManualKjseaMappings } from "./kjseaRestoreManualMappings";
+```
+
+Build the registry exactly once:
 
 ```ts
 export const kjseaPapers = [
@@ -28,77 +28,61 @@ export const kjseaPapers = [
   grade8SciencePaper,
   grade9AgriculturePaper,
   grade9SciencePaper,
-].map(normalizeKjseaPaper);
+].map(restoreManualKjseaMappings);
 ```
 
-Remove any earlier `.map(withCorrectKjseaQuestionImages)` call.
-
-## Component correction
-
-In `components/KjseaDigitalPaper.tsx`, the visible number and figure must use `printedNumber`.
-
-For Section A:
-
-```tsx
-const question = paper.mcq[currentIndex];
-const printedNumber = Number(question.printedNumber ?? currentIndex + 1);
-```
-
-For Section B:
-
-```tsx
-{paper.structured.map((question, index) => {
-  const printedNumber = Number(
-    question.printedNumber ?? paper.mcq.length + index + 1
-  );
-
-  return (
-    <section key={printedNumber}>
-      <h3>Question {printedNumber}</h3>
-      <p>{String(question.q ?? question.prompt ?? question.question ?? "")}</p>
-      <KjseaQuestionFigure
-        paperSlug={paper.slug}
-        printedNumber={printedNumber}
-        alt={`${paper.title}, question ${printedNumber}`}
-      />
-      {/* existing answer fields */}
-    </section>
-  );
-})}
-```
-
-Import the figure component:
+Remove earlier registry transforms such as:
 
 ```ts
-import KjseaQuestionFigure from "./KjseaQuestionFigure";
+.map(normalizeKjseaPaper)
+.map(withCorrectKjseaQuestionImages)
 ```
 
-## Remove old numbering logic
+Do not chain more than one mapping function.
 
-Delete Section B code using any of these as the visible paper question number:
+## 3. Update `components/KjseaDigitalPaper.tsx`
 
-```ts
-index + 1
-question.id
-question.number
+Use the normalized fields already attached to each question:
+
+```tsx
+const printedNumber = Number(question.printedNumber);
 ```
 
-unless it reads the normalized `printedNumber` first.
+Display the image directly from the question record:
 
-## Expected Section B starts
+```tsx
+{question.figure ? (
+  <figure className="kjseaQuestionFigure">
+    <img
+      src={String(question.figure)}
+      alt={`${paper.title}, question ${printedNumber}`}
+    />
+  </figure>
+) : null}
+```
 
-- Grade 7 Agriculture: Q21
-- Grade 7 Science: Q21
-- Grade 8 Agriculture: Q21
-- Grade 8 Science: Q21
-- Grade 9 Agriculture: Q31
-- Grade 9 Science: Q31
+For Section B, never use `index + 1`, `question.id`, or `question.number` as the displayed paper number.
 
-## Visual check
+```tsx
+<h3>Question {Number(question.printedNumber)}</h3>
+```
 
-- Grade 7 Agriculture Q21, Q25, Q27
-- Grade 7 Science Q21, Q24, Q29, Q30
-- Grade 8 Agriculture Q21, Q25, Q28
-- Grade 8 Science Q21, Q27, Q29
-- Grade 9 Agriculture Q31, Q38
-- Grade 9 Science Q31, Q33, Q36, Q40
+## 4. Remove conflicting runtime image lookups
+
+Remove imports/usages of:
+
+```text
+KjseaQuestionFigure
+getKjseaQuestionImage
+kjseaQuestionImageMap
+kjseaQuestionNumbering
+```
+
+The exact figure path now lives directly inside the correct question record.
+
+## Expected starts
+
+- Grade 7 and 8 Section B: Question 21
+- Grade 9 Section B: Question 31
+
+The supplied mapping contains exactly 47 visuals and follows Joachim's original manual question list.
