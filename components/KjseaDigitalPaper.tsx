@@ -90,10 +90,10 @@ const MANUAL_FIGURES: Record<string, Record<number, string>> = {
     23: `${IMAGE_ROOT}/grade-9-science/q23.jpg`,
     27: `${IMAGE_ROOT}/grade-9-science/q27.jpg`,
     28: `${IMAGE_ROOT}/grade-9-science/q28.jpg`,
-    31: `${IMAGE_ROOT}/grade-9-science/q31.jpg`,
-    33: `${IMAGE_ROOT}/grade-9-science/q33.jpg`,
-    36: `${IMAGE_ROOT}/grade-9-science/q36.jpg`,
-    40: `${IMAGE_ROOT}/grade-9-science/q40.jpg`,
+    31: `${IMAGE_ROOT}/grade-9-science/q31.jpg?v=20261111-3`,
+    33: `${IMAGE_ROOT}/grade-9-science/q33.jpg?v=20261111-3`,
+    36: `${IMAGE_ROOT}/grade-9-science/q36.jpg?v=20261111-3`,
+    40: `${IMAGE_ROOT}/grade-9-science/q40.jpg?v=20261111-3`,
   },
 };
 
