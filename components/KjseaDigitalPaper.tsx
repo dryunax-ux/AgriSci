@@ -13,6 +13,8 @@ type M = {
 };
 
 type S = {
+  id?: number;
+  printedNumber?: number;
   q: string;
   marks: number;
   scheme: readonly string[];
@@ -106,7 +108,10 @@ function inferPaperSlug(paper: P): string {
 }
 
 function mappedFigure(paper: P, printedQuestionNumber: number): string | undefined {
-  return MANUAL_FIGURES[inferPaperSlug(paper)]?.[printedQuestionNumber];
+  const path = MANUAL_FIGURES[inferPaperSlug(paper)]?.[printedQuestionNumber];
+  if (!path) return undefined;
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}v=20261112-section-a-id`;
 }
 
 function QuestionFigure({ paper, number }: { paper: P; number: number }) {
@@ -238,7 +243,7 @@ export default function KjseaDigitalPaper({ paper }: { paper: P }) {
           </div>
           <article className={styles.card}>
             <h2>{item.prompt}</h2>
-            <QuestionFigure paper={paper} number={index + 1} />
+            <QuestionFigure paper={paper} number={Number(item.id ?? index + 1)} />
             <div className={styles.options}>
               {item.options.map((option, optionIndex) => (
                 <label key={optionIndex}>
@@ -284,7 +289,7 @@ export default function KjseaDigitalPaper({ paper }: { paper: P }) {
             <b>Recorded: {sectionBScore}/{sectionBTotal} · Overall: {correct + sectionBScore}/{totalMarks}</b>
           </div>
           {paper.structured.map((question, questionIndex) => {
-            const printedNumber = paper.mcq.length + questionIndex + 1;
+            const printedNumber = Number(question.printedNumber ?? question.id ?? (paper.mcq.length + questionIndex + 1));
             const values = responses(questionIndex, question);
             const filled = values.filter(Boolean).length;
             const result = results[questionIndex];
